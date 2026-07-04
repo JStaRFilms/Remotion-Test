@@ -1,0 +1,33 @@
+{
+  "name": "orbit-commercial",
+  "version": "1.0.0",
+  "private": true,
+  "description": "High-production Apple-style commercial for Orbit application built with Remotion",
+  "scripts": {
+    "start": "remotion preview",
+    "build": "remotion render OrbitCommercial out/orbit_commercial.mp4",
+    "upgrade": "remotion upgrade",
+    "test": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^8.16.8",
+    "@remotion/cli": "4.0.240",
+    "@remotion/google-fonts": "4.0.240",
+    "@remotion/paths": "4.0.240",
+    "@remotion/shapes": "4.0.240",
+    "@remotion/three": "4.0.240",
+    "@remotion/transitions": "4.0.240",
+    "lucide-react": "^1.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.240",
+    "three": "^0.164.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/three": "^0.164.0",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@9.0.0"
+}

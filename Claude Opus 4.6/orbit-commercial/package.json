@@ -1,0 +1,25 @@
+{
+  "name": "orbit-commercial",
+  "version": "1.0.0",
+  "description": "Orbit - Premium Application Commercial built with Remotion",
+  "scripts": {
+    "start": "npx remotion studio",
+    "build": "npx remotion render OrbitCommercial out/orbit-commercial.mp4",
+    "render": "npx remotion render OrbitCommercial out/orbit-commercial.mp4",
+    "render-frames": "npx remotion still OrbitCommercial --frame=45 frames/scene1.png && npx remotion still OrbitCommercial --frame=165 frames/scene2.png && npx remotion still OrbitCommercial --frame=315 frames/scene3.png && npx remotion still OrbitCommercial --frame=480 frames/scene4.png && npx remotion still OrbitCommercial --frame=630 frames/scene5.png && npx remotion still OrbitCommercial --frame=720 frames/scene6.png"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.484",
+    "@remotion/google-fonts": "4.0.484",
+    "@remotion/transitions": "4.0.484",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.484",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config": "4.0.484",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}
