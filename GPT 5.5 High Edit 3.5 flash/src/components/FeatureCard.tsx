@@ -1,5 +1,5 @@
 import React from 'react';
-import { COLORS } from '../config';
+import { COLORS, TYPO } from '../config';
 import { map, t } from '../utils/animation';
 
 export const FeatureCard: React.FC<{
@@ -21,6 +21,7 @@ export const FeatureCard: React.FC<{
   const finalHeight = title === 'Deliver' ? 210 : 210 - index * 22;
   const width = map(frame, [34 + delay, 76 + delay], [330, finalWidth]);
   const height = map(frame, [34 + delay, 76 + delay], [156, finalHeight]);
+  
   return (
     <div
       style={{
@@ -29,31 +30,33 @@ export const FeatureCard: React.FC<{
         top: '50%',
         width,
         height,
-        borderRadius: `${24 + shape * (index === 1 ? 92 : 14)}px`,
+        borderRadius: 4, // Completely sharp squared corners
         transform: `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${80 + index * 50}px) rotateX(${18 - p * 10}deg) rotateY(${-16 + p * 28}deg) rotateZ(${r}deg)`,
-        background: `linear-gradient(135deg, ${accent}${shape > 0.45 ? '66' : '28'}, rgba(255,255,255,0.075))`,
-        border: `1px solid ${accent}77`,
-        boxShadow: `0 32px 90px rgba(0,0,0,0.45), 0 0 ${26 + p * 34}px ${accent}24`,
+        background: 'rgba(9, 10, 14, 0.92)',
+        border: `1.5px solid ${accent}`, // Crisp bright solid borders
+        boxShadow: `0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)`,
         display: 'grid',
         placeItems: 'center',
         overflow: 'hidden',
+        backdropFilter: 'blur(8px)',
       }}
     >
-      <div style={{ position: 'absolute', inset: 16, borderRadius: 18, border: '1px solid rgba(255,255,255,0.09)', opacity: 1 - shape }} />
-      <div style={{ position: 'absolute', width: 260, height: 260, borderRadius: 999, background: `radial-gradient(circle, ${accent}44, transparent 58%)`, transform: `translate(${index * 20 - 30}px, ${index * -24}px)` }} />
+      {/* Precision square sub-border */}
+      <div style={{ position: 'absolute', inset: 8, border: '1px dashed rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
+      
+      {/* Title */}
       <div
         style={{
-          fontSize: 64,
+          fontSize: 48,
           lineHeight: 1,
           fontWeight: 800,
-          letterSpacing: -2.4,
+          letterSpacing: -1.5,
           color: COLORS.text,
           opacity: word,
-          transform: `translateY(${(1 - word) * 28}px) scale(${0.88 + word * 0.12})`,
-          textShadow: '0 20px 60px rgba(0,0,0,0.4)',
+          transform: `translateY(${(1 - word) * 24}px) scale(${0.88 + word * 0.12})`,
         }}
       >
-        {title}
+        {title.toUpperCase()}
       </div>
     </div>
   );
@@ -62,6 +65,7 @@ export const FeatureCard: React.FC<{
 export const MorphingPanel: React.FC<{ frame: number }> = ({ frame }) => {
   const inP = t(frame, 94, 124);
   const line = map(frame, [110, 142], [0, 100]);
+  
   return (
     <div
       style={{
@@ -70,26 +74,88 @@ export const MorphingPanel: React.FC<{ frame: number }> = ({ frame }) => {
         top: 270,
         width: 470,
         height: 392,
-        borderRadius: 34,
-        background: 'rgba(15,18,28,0.82)',
-        border: `1px solid rgba(255,255,255,${0.08 + inP * 0.12})`,
-        boxShadow: '0 36px 120px rgba(0,0,0,0.44)',
+        borderRadius: 6, // Sharp corner
+        background: '#090a0e',
+        border: `1px solid rgba(255,255,255,0.05)`,
+        boxShadow: '0 30px 90px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.04)',
         opacity: inP,
         transform: `translateX(${(1 - inP) * 72}px) rotateY(${-22 + inP * 22}deg)`,
         transformStyle: 'preserve-3d',
-        padding: 34,
+        padding: 30,
       }}
     >
-      <div style={{ color: COLORS.muted, fontSize: 16, textTransform: 'uppercase', letterSpacing: 1.8 }}>Team operating system</div>
-      <div style={{ color: COLORS.text, fontSize: 42, fontWeight: 760, letterSpacing: -1.1, marginTop: 12 }}>One connected workspace</div>
-      <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 18 }}>
-        {[COLORS.blue, COLORS.violet, COLORS.green].map((c, i) => (
-          <div key={c} style={{ height: 42, borderRadius: 999, background: 'rgba(255,255,255,0.07)', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${Math.min(100, line - i * 16)}%`, background: `linear-gradient(90deg, ${c}, rgba(255,255,255,0.38))`, borderRadius: 999 }} />
-          </div>
-        ))}
+      <div style={{ color: COLORS.muted, fontSize: 11, fontFamily: TYPO.mono, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        System // Unified Matrix
       </div>
-      <div style={{ position: 'absolute', right: 34, bottom: 32, width: 92, height: 92, borderRadius: 28, background: `conic-gradient(${COLORS.blue}, ${COLORS.violet}, ${COLORS.green}, ${COLORS.blue})`, opacity: 0.86, boxShadow: '0 0 40px rgba(56,183,255,0.26)' }} />
+      <div style={{ color: COLORS.text, fontSize: 30, fontWeight: 800, letterSpacing: -1, marginTop: 10 }}>
+        One connected workspace.
+      </div>
+      
+      {/* Brutalist Flat Sliders */}
+      <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 14 }}>
+        {[COLORS.blue, COLORS.violet, COLORS.green].map((c, i) => {
+          const widthVal = Math.min(100, line - i * 16);
+          return (
+            <div 
+              key={c} 
+              style={{ 
+                height: 18, 
+                borderRadius: 0, // Sharp square slots
+                background: 'rgba(255,255,255,0.015)', 
+                border: '1px solid rgba(255,255,255,0.03)',
+                position: 'relative',
+              }}
+            >
+              {/* Flat solid color progress */}
+              <div 
+                style={{ 
+                  height: '100%', 
+                  width: `${widthVal}%`, 
+                  background: c, 
+                }} 
+              />
+              {/* Squared slider thumb indicator */}
+              {widthVal > 0 && (
+                <div style={{
+                  position: 'absolute',
+                  left: `calc(${widthVal}% - 6px)`,
+                  top: -2,
+                  width: 12,
+                  height: 22,
+                  background: '#ffffff',
+                  border: `1px solid ${c}`,
+                }} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+      
+      {/* Square Conic core widget */}
+      <div style={{ 
+        position: 'absolute', 
+        right: 30, 
+        bottom: 30, 
+        width: 80, 
+        height: 80, 
+        borderRadius: 4, 
+        background: 'rgba(0,0,0,0.4)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        display: 'grid',
+        placeItems: 'center',
+      }}>
+        <div style={{ 
+          width: 54, 
+          height: 54, 
+          borderRadius: 0, // Squared conic badge
+          background: `conic-gradient(${COLORS.blue}, ${COLORS.violet}, ${COLORS.green}, ${COLORS.blue})`, 
+          opacity: 0.85, 
+          display: 'grid',
+          placeItems: 'center',
+        }}>
+          <div style={{ width: 24, height: 24, background: '#090a0e', border: '1px solid rgba(255,255,255,0.08)' }} />
+        </div>
+      </div>
     </div>
   );
 };

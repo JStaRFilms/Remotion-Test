@@ -23,7 +23,7 @@ export const Scene4Captions: React.FC<{ frame: number }> = ({ frame }) => {
       <DepthDust frame={frame + 390} intensity={0.55} />
       <LightSweep x={map(frame, [0, 180], [1120, 420])} opacity={0.11 + shipPulse * 0.14} rotate={13} />
       <div style={{ position: 'absolute', inset: 0, perspective: 1300, transformStyle: 'preserve-3d' }}>
-        <div style={{ transform: `translate3d(${camera * -42}px, ${camera * -18}px, 0)`, transformStyle: 'preserve-3d' }}>
+        <div style={{ position: 'absolute', inset: 0, transform: `translate3d(${camera * -42}px, ${camera * -18}px, 0)`, transformStyle: 'preserve-3d' }}>
           <AppWindow frame={frame} variant="review" scale={1.03 + camera * 0.045} rotateX={8 - camera * 2} rotateY={-7 + camera * 5} clickAt={62} />
         </div>
         <DynamicCaption
@@ -47,9 +47,9 @@ export const Scene4Captions: React.FC<{ frame: number }> = ({ frame }) => {
             top: 424,
             width: 248,
             height: 58,
-            borderRadius: 19,
-            border: `1px solid rgba(56,183,255,${0.2 + ideaAttach * 0.45})`,
-            background: `rgba(56,183,255,${ideaAttach * 0.14})`,
+            borderRadius: 4, // Sharp corners
+            border: `1px solid rgba(99,102,241,${0.2 + ideaAttach * 0.45})`, // Indigo outline
+            background: `rgba(99,102,241,${ideaAttach * 0.08})`,
             opacity: ideaAttach,
           }}
         />
@@ -87,11 +87,11 @@ export const Scene4Captions: React.FC<{ frame: number }> = ({ frame }) => {
             bottom: 216,
             width: 326,
             height: 66,
-            borderRadius: 24,
-            background: `linear-gradient(90deg, rgba(116,240,186,${0.16 + shipPulse * 0.42}), rgba(133,244,255,${0.09 + shipPulse * 0.24}))`,
-            border: `1px solid rgba(116,240,186,${0.22 + shipPulse * 0.55})`,
+            borderRadius: 4, // Sharp corners
+            background: `rgba(167, 139, 250, ${shipPulse * 0.12})`, // Lilac wash
+            border: `1px solid rgba(167, 139, 250, ${0.22 + shipPulse * 0.55})`,
             opacity: t(frame, 130, 158),
-            boxShadow: `0 0 ${shipPulse * 64}px rgba(116,240,186,0.28)`,
+            boxShadow: `0 0 20px rgba(167, 139, 250, ${shipPulse * 0.2})`,
           }}
         />
         <Cursor frame={frame} path={cursorPath} clickFrames={[62, 132]} visibleFrom={0} visibleTo={166} label={frame > 115 ? 'approve' : undefined} />

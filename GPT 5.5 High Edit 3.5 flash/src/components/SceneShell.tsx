@@ -6,28 +6,43 @@ export const SceneShell: React.FC<{ children: React.ReactNode; vignette?: number
   return (
     <AbsoluteFill
       style={{
-        background: `radial-gradient(circle at 54% 42%, rgba(56,183,255,0.12), transparent 30%), radial-gradient(circle at 72% 72%, rgba(140,108,255,0.11), transparent 34%), linear-gradient(180deg, ${COLORS.bg2}, ${COLORS.bg})`,
+        background: `radial-gradient(circle at 50% 30%, rgba(99,102,241,0.06), transparent 50%), linear-gradient(180deg, ${COLORS.bg2}, ${COLORS.bg})`,
         color: COLORS.text,
         fontFamily: TYPO.font,
         overflow: 'hidden',
       }}
     >
+      {/* Precision Technical Dot Grid Matrix (Brutalist style) */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+          maskImage: 'radial-gradient(circle at 50% 50%, black, transparent 85%)',
+          opacity: 0.8,
+        }}
+      />
+      
+      {/* Sharp technical grid dividers */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.032) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px)',
-          backgroundSize: '72px 72px',
-          maskImage: 'radial-gradient(circle at 50% 52%, black, transparent 72%)',
-          opacity: 0.52,
+            'linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px)',
+          backgroundSize: '120px 120px',
+          maskImage: 'radial-gradient(circle at 50% 50%, black, transparent 75%)',
+          opacity: 0.6,
         }}
       />
+      
+      {/* Technical Matte Vignette */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(circle at 50% 46%, transparent 0%, transparent 45%, rgba(0,0,0,${vignette}) 100%)`,
+          background: `radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,${vignette * 1.05}) 100%)`,
         }}
       />
       {children}
@@ -41,10 +56,10 @@ export const LightSweep: React.FC<{ x: number; opacity?: number; rotate?: number
       position: 'absolute',
       left: x,
       top: -240,
-      width: 320,
+      width: 140, // Narrower, sharper sweep
       height: 1600,
-      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)',
-      filter: 'blur(26px)',
+      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), rgba(99,102,241,0.04), rgba(255,255,255,0.06), transparent)',
+      filter: 'blur(16px)',
       transform: `rotate(${rotate}deg)`,
       opacity,
       mixBlendMode: 'screen',
@@ -53,7 +68,7 @@ export const LightSweep: React.FC<{ x: number; opacity?: number; rotate?: number
 );
 
 export const DepthDust: React.FC<{ frame: number; intensity?: number }> = ({ frame, intensity = 1 }) => {
-  const dots = Array.from({ length: 34 }, (_, i) => {
+  const dots = Array.from({ length: 30 }, (_, i) => {
     const x = (i * 313) % 1900;
     const y = (i * 197) % 1040;
     const z = (i % 7) + 1;
@@ -65,12 +80,11 @@ export const DepthDust: React.FC<{ frame: number; intensity?: number }> = ({ fra
           position: 'absolute',
           left: x + drift,
           top: y + drift * 0.22,
-          width: z < 3 ? 1 : 2,
-          height: z < 3 ? 1 : 2,
-          borderRadius: 999,
-          background: z % 3 === 0 ? 'rgba(133,244,255,0.55)' : 'rgba(255,255,255,0.38)',
-          opacity: intensity * (0.12 + z * 0.035),
-          boxShadow: z % 3 === 0 ? '0 0 10px rgba(56,183,255,0.45)' : undefined,
+          width: 1.5,
+          height: 1.5,
+          borderRadius: 0, // Sharp square technical dust/particles
+          background: z % 3 === 0 ? COLORS.cyan : 'rgba(255,255,255,0.3)',
+          opacity: intensity * (0.1 + z * 0.035),
         }}
       />
     );

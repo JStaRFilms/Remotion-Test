@@ -15,25 +15,26 @@ export const SCENES = {
   lockup: { from: 690, duration: 60 },
 };
 
+// Refined Technical Brutalism / Mono-Chrono Lilac color palette
 export const COLORS = {
-  bg: '#050609',
-  bg2: '#090B12',
-  panel: '#111520',
-  panel2: '#171C2A',
-  stroke: 'rgba(255,255,255,0.11)',
-  muted: '#79839A',
-  text: '#F7F8FB',
-  softText: '#C9D0DE',
-  blue: '#38B7FF',
-  violet: '#8C6CFF',
-  cyan: '#85F4FF',
-  green: '#74F0BA',
-  amber: '#FFD166',
-  danger: '#FF6B9A',
+  bg: '#08090b',         // Matte Obsidian
+  bg2: '#0e1014',        // Charcoal Slate
+  panel: '#14161d',      // Technical Carbon
+  panel2: '#1b1d26',     // Dark Steel
+  stroke: 'rgba(255,255,255,0.06)', // Razor-thin divider
+  muted: '#626775',      // Matte Slate
+  text: '#ffffff',       // Pure White
+  softText: '#cbd5e1',   // Light Slate
+  blue: '#6366f1',       // Restrained Indigo
+  violet: '#8b5cf6',     // Electric Violet
+  cyan: '#c084fc',       // Soft Lilac
+  green: '#a78bfa',      // Pastel Lavender
+  amber: '#d8b4fe',      // Light Lavender
+  danger: '#fda4af',     // Rose (Muted Red)
 };
 
 export const TYPO = {
-  font: 'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  font: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
   mono: '"SF Mono", "Cascadia Code", Consolas, monospace',
 };
 

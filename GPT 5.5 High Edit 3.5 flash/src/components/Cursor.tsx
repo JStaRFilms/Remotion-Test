@@ -1,5 +1,5 @@
 import React from 'react';
-import { COLORS } from '../config';
+import { COLORS, TYPO } from '../config';
 import { clickPulse, pathPoint, Point, t } from '../utils/animation';
 
 export const Cursor: React.FC<{
@@ -27,42 +27,78 @@ export const Cursor: React.FC<{
         transform: `translateZ(180px) scale(${compression})`,
         transformOrigin: '0 0',
         zIndex: 50,
-        filter: 'drop-shadow(0 12px 20px rgba(0,0,0,0.45))',
+        filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.6))',
       }}
     >
+      {/* Precision Expanding Click Square (instead of circular ripple) */}
       {pulse.active && (
-        <div
-          style={{
-            position: 'absolute',
-            left: -34 - pulse.p * 18,
-            top: -34 - pulse.p * 18,
-            width: 68 + pulse.p * 36,
-            height: 68 + pulse.p * 36,
-            borderRadius: 999,
-            border: `2px solid rgba(133,244,255,${0.48 * (1 - pulse.p)})`,
-            background: `rgba(56,183,255,${0.1 * (1 - pulse.p)})`,
-          }}
-        />
+        <>
+          <div
+            style={{
+              position: 'absolute',
+              left: -15 - pulse.p * 15,
+              top: -15 - pulse.p * 15,
+              width: 30 + pulse.p * 30,
+              height: 30 + pulse.p * 30,
+              border: `1px solid rgba(192, 132, 252, ${0.8 * (1 - pulse.p)})`,
+              background: 'transparent',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: -5 - pulse.p * 5,
+              top: -5 - pulse.p * 5,
+              width: 10 + pulse.p * 10,
+              height: 10 + pulse.p * 10,
+              border: `1px dashed rgba(255, 255, 255, ${0.5 * (1 - pulse.p)})`,
+            }}
+          />
+        </>
       )}
-      <svg width="42" height="54" viewBox="0 0 42 54" fill="none" style={{ display: 'block' }}>
-        <path d="M6 4L35 31L20.8 32.4L15.4 48L6 4Z" fill="white" stroke="rgba(0,0,0,0.34)" strokeWidth="2.4" strokeLinejoin="round" />
-        <path d="M20.8 32.4L28.2 47.2" stroke={COLORS.blue} strokeWidth="4" strokeLinecap="round" />
+      
+      {/* Sleek Vector Cursor */}
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" style={{ display: 'block' }}>
+        <path 
+          d="M3 2L28 17L16.2 18.2L12.5 28.5L3 2Z" 
+          fill="white" 
+          stroke="rgba(0,0,0,0.5)" 
+          strokeWidth="2" 
+          strokeLinejoin="miter" 
+        />
+        <path 
+          d="M16.2 18.2L21 27" 
+          stroke={COLORS.violet} 
+          strokeWidth="3.5" 
+          strokeLinecap="square" 
+        />
       </svg>
+      
+      {/* Flat rectangular label badge */}
       {label && (
         <div
           style={{
             position: 'absolute',
-            left: 38,
-            top: 34,
-            padding: '8px 11px',
-            borderRadius: 999,
-            background: 'rgba(5,6,9,0.72)',
-            border: '1px solid rgba(255,255,255,0.13)',
-            color: COLORS.softText,
-            fontSize: 13,
+            left: 24,
+            top: 24,
+            padding: '4px 8px',
+            borderRadius: 2, // Sharp rectangular card
+            background: '#090a0d',
+            border: '1px solid rgba(255,255,255,0.08)',
+            color: '#fff',
+            fontSize: 10,
+            fontWeight: 600,
+            fontFamily: TYPO.mono,
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
             whiteSpace: 'nowrap',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 5,
           }}
         >
+          <span style={{ width: 4, height: 4, background: COLORS.green }} />
           {label}
         </div>
       )}
