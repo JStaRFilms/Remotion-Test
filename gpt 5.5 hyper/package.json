@@ -1,0 +1,15 @@
+{
+  "name": "orbit-commercial",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.7.38 preview",
+    "check": "npx --yes hyperframes@0.7.38 lint && npx --yes hyperframes@0.7.38 validate && npx --yes hyperframes@0.7.38 inspect",
+    "frames": "npx --yes hyperframes@0.7.38 snapshot --at 1.5,5.5,10.5,15.5,20.5,24.2 --output frames --no-end --describe false",
+    "render": "npx --yes hyperframes@0.7.38 render --quality high --output dist/OrbitCommercial.mp4",
+    "publish": "npx --yes hyperframes@0.7.38 publish"
+  },
+  "devDependencies": {
+    "gsap": "^3.14.2"
+  }
+}

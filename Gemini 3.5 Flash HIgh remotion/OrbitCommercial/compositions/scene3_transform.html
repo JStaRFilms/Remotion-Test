@@ -1,0 +1,401 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #060608;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          perspective: 1600px;
+        }
+
+        .spatial-container {
+          position: relative;
+          width: 1200px;
+          height: 600px;
+          transform-style: preserve-3d;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          opacity: 0;
+        }
+
+        /* 3D Background Grid */
+        .scene3-grid {
+          position: absolute;
+          width: 150%;
+          height: 150%;
+          background-image: radial-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+          background-size: 40px 40px;
+          transform: translateZ(-200px);
+          opacity: 0.8;
+        }
+
+        /* The morphing elements container */
+        .transform-wrapper {
+          display: flex;
+          gap: 60px;
+          transform-style: preserve-3d;
+        }
+
+        /* Base Card that transforms */
+        .interactive-card {
+          width: 320px;
+          height: 240px;
+          background: rgba(15, 15, 22, 0.7);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 16px;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+          display: flex;
+          flex-direction: column;
+          padding: 24px;
+          transform-style: preserve-3d;
+          position: relative;
+        }
+
+        /* Elements inside the cards before morphing */
+        .card-inner-placeholder {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          opacity: 1;
+        }
+        .placeholder-bar {
+          height: 10px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 5px;
+          width: 80%;
+        }
+
+        /* Feature Panels (morphed state) */
+        .feature-panel {
+          position: absolute;
+          inset: 0;
+          background: rgba(10, 10, 15, 0.9);
+          border: 1.5px solid rgba(99, 102, 241, 0.35);
+          border-radius: 16px;
+          box-shadow: 
+            0 30px 60px rgba(0, 0, 0, 0.7),
+            0 0 30px rgba(99, 102, 241, 0.05);
+          display: flex;
+          flex-direction: column;
+          padding: 24px;
+          opacity: 0;
+          transform: scale(0.9) translateZ(-50px);
+          transform-style: preserve-3d;
+        }
+
+        .feature-label {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 11px;
+          color: #a5b4fc;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          margin-bottom: 8px;
+        }
+
+        .feature-word {
+          font-family: "Outfit", sans-serif;
+          font-weight: 800;
+          font-size: 46px;
+          line-height: 1;
+          color: #ffffff;
+          margin-bottom: 20px;
+        }
+
+        /* Micro-animations inside feature cards */
+        .animation-box {
+          flex: 1;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px dashed rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        /* Plan animation: Calendar grid with connecting line */
+        .plan-dots {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 8px;
+          padding: 12px;
+        }
+        .plan-dot {
+          width: 8px;
+          height: 8px;
+          background: rgba(255, 255, 255, 0.15);
+          border-radius: 50%;
+        }
+        .plan-line {
+          position: absolute;
+          left: 12px;
+          top: 36px;
+          height: 2px;
+          width: 0%;
+          background: #6366f1;
+          box-shadow: 0 0 8px #6366f1;
+        }
+
+        /* Review animation: comment bubbles popping in */
+        .review-bubble {
+          position: absolute;
+          background: rgba(99, 102, 241, 0.15);
+          border: 1px solid rgba(99, 102, 241, 0.3);
+          border-radius: 8px;
+          padding: 6px 12px;
+          font-size: 10px;
+          color: #ffffff;
+          opacity: 0;
+          transform: translateY(10px) scale(0.9);
+        }
+        .review-bubble::after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 12px;
+          border-width: 5px 5px 0;
+          border-style: solid;
+          border-color: rgba(99, 102, 241, 0.15) transparent;
+          display: block;
+          width: 0;
+        }
+
+        /* Deliver animation: Loading progression chart */
+        .deliver-chart {
+          display: flex;
+          align-items: flex-end;
+          gap: 12px;
+          height: 100%;
+          padding: 16px;
+        }
+        .chart-bar {
+          width: 20px;
+          height: 0%;
+          background: linear-gradient(to top, #3b82f6, #6366f1);
+          border-radius: 4px 4px 0 0;
+        }
+      </style>
+
+      <div id="root" data-composition-id="scene3" data-width="1920" data-height="1080">
+        <div class="scene3-grid" data-layout-allow-overflow="true"></div>
+
+        <div class="spatial-container" id="scene3-container">
+          <div class="transform-wrapper">
+            
+            <!-- CARD 1: Plan -->
+            <div class="interactive-card" id="card-1">
+              <div class="card-inner-placeholder" id="placeholder-1">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div style="width: 24px; height: 24px; border-radius:50%; background:rgba(255,255,255,0.1)"></div>
+                  <div style="width: 40px; height: 8px; background:rgba(255,255,255,0.1)"></div>
+                </div>
+                <div class="placeholder-bar" style="width: 90%;"></div>
+                <div class="placeholder-bar" style="width: 60%;"></div>
+                <div class="placeholder-bar" style="width: 75%;"></div>
+              </div>
+
+              <!-- Morphed Feature Panel -->
+              <div class="feature-panel" id="panel-1">
+                <div class="feature-label">01 / Schedule</div>
+                <div class="feature-word" id="word-plan">Plan</div>
+                <div class="animation-box">
+                  <div class="plan-dots">
+                    <div class="plan-dot"></div>
+                    <div class="plan-dot"></div>
+                    <div class="plan-dot"></div>
+                    <div class="plan-dot"></div>
+                    <div class="plan-dot" style="background:#6366f1"></div>
+                    <div class="plan-dot"></div>
+                    <div class="plan-dot"></div>
+                    <div class="plan-dot"></div>
+                  </div>
+                  <div class="plan-line" id="plan-flow-line"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 2: Review -->
+            <div class="interactive-card" id="card-2">
+              <div class="card-inner-placeholder" id="placeholder-2">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div style="width: 24px; height: 24px; border-radius:50%; background:rgba(255,255,255,0.1)"></div>
+                  <div style="width: 40px; height: 8px; background:rgba(255,255,255,0.1)"></div>
+                </div>
+                <div class="placeholder-bar" style="width: 80%;"></div>
+                <div class="placeholder-bar" style="width: 85%;"></div>
+                <div class="placeholder-bar" style="width: 50%;"></div>
+              </div>
+
+              <!-- Morphed Feature Panel -->
+              <div class="feature-panel" id="panel-2">
+                <div class="feature-label">02 / Collaborate</div>
+                <div class="feature-word" id="word-review">Review</div>
+                <div class="animation-box">
+                  <div class="review-bubble" id="bubble-1" style="top: 8px; left: 12px;">Looks great!</div>
+                  <div class="review-bubble" id="bubble-2" style="top: 36px; right: 12px; background:rgba(59,130,246,0.15); border-color:rgba(59,130,246,0.3)">Approved</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 3: Deliver -->
+            <div class="interactive-card" id="card-3">
+              <div class="card-inner-placeholder" id="placeholder-3">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div style="width: 24px; height: 24px; border-radius:50%; background:rgba(255,255,255,0.1)"></div>
+                  <div style="width: 40px; height: 8px; background:rgba(255,255,255,0.1)"></div>
+                </div>
+                <div class="placeholder-bar" style="width: 70%;"></div>
+                <div class="placeholder-bar" style="width: 90%;"></div>
+                <div class="placeholder-bar" style="width: 65%;"></div>
+              </div>
+
+              <!-- Morphed Feature Panel -->
+              <div class="feature-panel" id="panel-3">
+                <div class="feature-label">03 / Launch</div>
+                <div class="feature-word" id="word-deliver">Deliver</div>
+                <div class="animation-box">
+                  <div class="deliver-chart">
+                    <div class="chart-bar" id="bar-1"></div>
+                    <div class="chart-bar" id="bar-2"></div>
+                    <div class="chart-bar" id="bar-3"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // 1. Container entry (fades in and tilts towards screen)
+        tl.fromTo("#scene3-container",
+          { opacity: 0, transform: "rotateY(12deg) rotateX(-8deg) translateZ(-150px)" },
+          { opacity: 1, transform: "rotateY(-4deg) rotateX(2deg) translateZ(0px)", duration: 1.0, ease: "power2.out" },
+          0
+        );
+
+        // Continuous Z-space camera push
+        tl.to("#scene3-container", {
+          transform: "rotateY(1deg) rotateX(1deg) translateZ(100px)",
+          duration: 3.8,
+          ease: "none"
+        }, 1.0);
+
+        // 2. Cards Detachment (Pop forward individually in Z space with slight rotation)
+        tl.to("#card-1", {
+          transform: "translateZ(80px) rotateY(-8deg)",
+          borderColor: "rgba(99, 102, 241, 0.4)",
+          boxShadow: "0 30px 60px rgba(0, 0, 0, 0.8)",
+          duration: 0.6,
+          ease: "power2.out"
+        }, 0.5);
+
+        tl.to("#card-2", {
+          transform: "translateZ(100px) rotateY(0deg)",
+          borderColor: "rgba(99, 102, 241, 0.4)",
+          boxShadow: "0 30px 60px rgba(0, 0, 0, 0.8)",
+          duration: 0.6,
+          ease: "power2.out"
+        }, 0.65);
+
+        tl.to("#card-3", {
+          transform: "translateZ(80px) rotateY(8deg)",
+          borderColor: "rgba(99, 102, 241, 0.4)",
+          boxShadow: "0 30px 60px rgba(0, 0, 0, 0.8)",
+          duration: 0.6,
+          ease: "power2.out"
+        }, 0.8);
+
+        // 3. Morphing Transition: Placeholder items fade out, geometric cards shrink/round and reveal feature panels
+        tl.to(["#placeholder-1", "#placeholder-2", "#placeholder-3"], {
+          opacity: 0,
+          scale: 0.9,
+          duration: 0.4,
+          ease: "power2.in"
+        }, 1.2);
+
+        // Cards physically morph (border radius, size animation using transforms/styles)
+        // We simulate the shape-to-interface transformation by expanding/scaling the feature panels inside
+        tl.to(["#panel-1", "#panel-2", "#panel-3"], {
+          opacity: 1,
+          scale: 1.0,
+          transform: "translateZ(0px)",
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "back.out(1.4)"
+        }, 1.4);
+
+        // 4. Feature words dynamic entrance with distinct animation roles
+        // "Plan" - Sweeps in from left
+        tl.fromTo("#word-plan",
+          { opacity: 0, x: -30 },
+          { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" },
+          1.7
+        );
+        // Plan micro-animation: Line draws out
+        tl.to("#plan-flow-line", {
+          width: "80%",
+          duration: 0.8,
+          ease: "power1.inOut"
+        }, 2.1);
+
+        // "Review" - Rises up
+        tl.fromTo("#word-review",
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" },
+          2.0
+        );
+        // Review micro-animation: comments pop in
+        tl.to("#bubble-1", {
+          opacity: 1,
+          scale: 1.0,
+          y: 0,
+          duration: 0.4,
+          ease: "back.out(1.5)"
+        }, 2.3);
+        tl.to("#bubble-2", {
+          opacity: 1,
+          scale: 1.0,
+          y: 0,
+          duration: 0.4,
+          ease: "back.out(1.5)"
+        }, 2.6);
+
+        // "Deliver" - Slides out from back/right
+        tl.fromTo("#word-deliver",
+          { opacity: 0, scale: 0.8, z: -20 },
+          { opacity: 1, scale: 1.0, z: 0, duration: 0.6, ease: "power3.out" },
+          2.3
+        );
+        // Deliver micro-animation: bars grow
+        tl.to("#bar-1", { height: "70%", duration: 0.5, ease: "power2.out" }, 2.6);
+        tl.to("#bar-2", { height: "90%", duration: 0.5, ease: "power2.out" }, 2.75);
+        tl.to("#bar-3", { height: "55%", duration: 0.5, ease: "power2.out" }, 2.9);
+
+        // 5. Scene exit fade out
+        tl.to("#root", {
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.inOut"
+        }, 4.6);
+
+        window.__timelines["scene3"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

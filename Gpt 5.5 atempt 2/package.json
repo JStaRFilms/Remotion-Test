@@ -1,0 +1,25 @@
+{
+  "name": "orbit-commercial-remotion",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preview": "remotion preview src/index.ts",
+    "still": "remotion still src/index.ts OrbitCommercial frames/still.png --frame=120",
+    "render": "remotion render src/index.ts OrbitCommercial out/orbit-commercial.mp4 --codec=h264 --audio-codec=aac --pixel-format=yuv420p",
+    "render:frames": "node scripts/render-frames.mjs",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "latest",
+    "@remotion/renderer": "latest",
+    "remotion": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}

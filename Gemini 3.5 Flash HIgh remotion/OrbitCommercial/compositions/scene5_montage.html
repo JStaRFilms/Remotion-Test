@@ -1,0 +1,597 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #060608;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          perspective: 1600px;
+        }
+
+        .montage-frame {
+          width: 1100px;
+          height: 640px;
+          background: rgba(12, 12, 18, 0.75);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 20px;
+          backdrop-filter: blur(25px);
+          box-shadow: 0 40px 90px rgba(0, 0, 0, 0.8);
+          transform-style: preserve-3d;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          opacity: 0;
+        }
+
+        /* Header (persistent) */
+        .montage-header {
+          height: 60px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 24px;
+        }
+        .header-dots {
+          display: flex;
+          gap: 8px;
+        }
+        .header-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.15);
+        }
+        .header-title {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 12px;
+          color: rgba(255,255,255,0.65);
+          letter-spacing: 2px;
+        }
+
+        /* Content panels container */
+        .montage-stages {
+          flex: 1;
+          position: relative;
+          transform-style: preserve-3d;
+        }
+
+        /* Stage Base Class */
+        .stage {
+          position: absolute;
+          inset: 0;
+          padding: 32px;
+          display: flex;
+          flex-direction: column;
+          opacity: 0;
+          transform: scale(0.95) translateZ(-40px);
+          transform-style: preserve-3d;
+        }
+
+        /* ==================== STAGE 1: ORG ==================== */
+        .org-columns {
+          display: flex;
+          gap: 20px;
+          flex: 1;
+        }
+        .org-col {
+          flex: 1;
+          background: rgba(255, 255, 255, 0.015);
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          border-radius: 12px;
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .org-col-title {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.4);
+          margin-bottom: 8px;
+        }
+        .org-item-card {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 8px;
+          padding: 12px;
+          font-size: 13px;
+          font-weight: 500;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+          transform: translateZ(10px);
+        }
+
+        /* ==================== STAGE 2: PLAYER ==================== */
+        .player-wrapper {
+          flex: 1;
+          display: flex;
+          gap: 24px;
+          transform-style: preserve-3d;
+        }
+        .video-box {
+          flex: 2;
+          background: #09090d;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 12px;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .video-scrubber {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 50px;
+          background: rgba(13, 13, 18, 0.9);
+          border-top: 1px solid rgba(255,255,255,0.06);
+          display: flex;
+          align-items: center;
+          padding: 0 16px;
+          gap: 16px;
+        }
+        .scrub-line {
+          flex: 1;
+          height: 4px;
+          background: rgba(255,255,255,0.1);
+          border-radius: 2px;
+          position: relative;
+        }
+        .scrub-progress {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 0%;
+          background: #6366f1;
+          border-radius: 2px;
+        }
+        .scrub-handle {
+          position: absolute;
+          top: -4px;
+          left: 0%;
+          width: 12px;
+          height: 12px;
+          background: #ffffff;
+          border-radius: 50%;
+          transform: translateX(-50%);
+          box-shadow: 0 0 6px rgba(0,0,0,0.5);
+        }
+
+        /* ==================== STAGE 3: COMMENTS ==================== */
+        .collab-wrapper {
+          flex: 1;
+          display: flex;
+          gap: 24px;
+        }
+        .chart-box-side {
+          flex: 1;
+          background: rgba(255, 255, 255, 0.015);
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+        .circle-progress-wrap {
+          position: relative;
+          width: 140px;
+          height: 140px;
+        }
+        .circle-progress-svg {
+          transform: rotate(-90deg);
+        }
+        .circle-bg {
+          fill: none;
+          stroke: rgba(255, 255, 255, 0.04);
+          stroke-width: 10;
+        }
+        .circle-val {
+          fill: none;
+          stroke: url(#ring-grad);
+          stroke-width: 10;
+          stroke-dasharray: 440;
+          stroke-dashoffset: 440;
+          stroke-linecap: round;
+        }
+        .percent-text {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: "Outfit", sans-serif;
+          font-size: 28px;
+          font-weight: 700;
+        }
+        .comments-feed {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .comment-node {
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+          padding: 12px;
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        .comment-avatar {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: #3b82f6;
+        }
+
+        /* ==================== STAGE 4: DONE ==================== */
+        .done-wrapper {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+          transform-style: preserve-3d;
+        }
+        .success-circle {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          background: rgba(16, 185, 129, 0.1);
+          border: 3px solid #10b981;
+          box-shadow: 
+            0 0 30px rgba(16, 185, 129, 0.2),
+            0 0 50px rgba(16, 185, 129, 0.15) inset;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transform: scale(0.6) translateZ(30px);
+        }
+        .success-checkmark {
+          width: 50px;
+          height: 25px;
+          border-left: 5px solid #10b981;
+          border-bottom: 5px solid #10b981;
+          transform: rotate(-45deg) translate(5px, -5px);
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+          opacity: 0;
+        }
+        .complete-title {
+          font-family: "Outfit", sans-serif;
+          font-size: 32px;
+          font-weight: 700;
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        /* Clickable "Publish" button */
+        .publish-btn {
+          padding: 12px 32px;
+          background: linear-gradient(135deg, #6366f1, #3b82f6);
+          border: none;
+          border-radius: 8px;
+          font-family: "Outfit", sans-serif;
+          font-weight: 600;
+          font-size: 15px;
+          color: #ffffff;
+          box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+          cursor: pointer;
+          transform: translateZ(20px);
+          opacity: 0;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+          position: absolute;
+          width: 24px;
+          height: 24px;
+          pointer-events: none;
+          z-index: 9999;
+          transform: translate(-50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+        }
+        .cursor-ring {
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          border: 2px solid #ffffff;
+          border-radius: 50%;
+          box-shadow: 0 0 8px rgba(255,255,255,0.4);
+        }
+        .cursor-dot {
+          width: 6px;
+          height: 6px;
+          background: #6366f1;
+          border-radius: 50%;
+        }
+        .cursor-ripple {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          border: 1.5px solid #6366f1;
+          border-radius: 50%;
+          opacity: 0;
+          transform: scale(0.2);
+        }
+      </style>
+
+      <div id="root" data-composition-id="scene5" data-width="1920" data-height="1080">
+        <!-- Persistent Browser frame -->
+        <div class="montage-frame" id="montage-container">
+          <div class="montage-header">
+            <div class="header-dots">
+              <div class="header-dot"></div>
+              <div class="header-dot"></div>
+              <div class="header-dot"></div>
+            </div>
+            <div class="header-title">ORBIT // PIPELINE_FLOW</div>
+            <div style="width: 46px;"></div>
+          </div>
+
+          <div class="montage-stages">
+            
+            <!-- STAGE 1: Project Organisation (0s - 1s) -->
+            <div class="stage" id="stage-org">
+              <div class="org-columns">
+                <div class="org-col">
+                  <div class="org-col-title">TO DO</div>
+                  <div class="org-item-card" id="org-card-1">Asset Prep</div>
+                  <div class="org-item-card" id="org-card-2">Audio Design</div>
+                </div>
+                <div class="org-col" style="background:rgba(255,255,255,0.03)">
+                  <div class="org-col-title" style="color:#6366f1">IN REVIEW</div>
+                  <div class="org-item-card" id="org-card-3" style="border-color:rgba(99,102,241,0.3)">Intro Draft</div>
+                </div>
+                <div class="org-col">
+                  <div class="org-col-title">COMPLETED</div>
+                  <div class="org-item-card" id="org-card-4" style="opacity:0.5">Storyboard v2</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAGE 2: Media Review (1s - 2s) -->
+            <div class="stage" id="stage-player">
+              <div class="player-wrapper">
+                <div class="video-box">
+                  <!-- Decorative visual grid representation inside player -->
+                  <div style="width: 100%; height: 100%; display:grid; grid-template-columns:repeat(5,1fr); grid-template-rows:repeat(5,1fr); opacity: 0.15;">
+                    <div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div>
+                    <div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div>
+                    <div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div>
+                    <div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div><div style="border:1px solid #fff;"></div>
+                  </div>
+                  <span style="position:absolute; font-family:'Outfit',sans-serif; font-weight:600; font-size:16px; color:rgba(255,255,255,0.4); pointer-events:none;">PREVIEWING VIDEO SELECTION</span>
+                  
+                  <div class="video-scrubber">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:10px;">0:14</span>
+                    <div class="scrub-line">
+                      <div class="scrub-progress" id="player-progress"></div>
+                      <div class="scrub-handle" id="player-handle"></div>
+                    </div>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:10px;">0:25</span>
+                  </div>
+                </div>
+                <div style="flex: 1; display:flex; flex-direction:column; gap:12px;">
+                  <div style="font-family:'Outfit',sans-serif; font-size:18px; font-weight:600;">Intro_v4.mp4</div>
+                  <div style="height: 1px; background:rgba(255,255,255,0.06);"></div>
+                  <div style="font-size: 11px; color:rgba(255,255,255,0.4); line-height:1.4;">Verify the pacing at frame 420. The transition feels dynamic.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAGE 3: Comment & Progress (2s - 3s) -->
+            <div class="stage" id="stage-comments">
+              <div class="collab-wrapper">
+                <div class="comments-feed">
+                  <div class="comment-node" id="comment-1">
+                    <div class="comment-avatar" style="background:#8b5cf6"></div>
+                    <div style="flex:1;">
+                      <div style="font-size:11px; font-weight:600;">Jane Doe</div>
+                      <div style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:2px;">Color grading is perfect.</div>
+                    </div>
+                  </div>
+                  <div class="comment-node" id="comment-2">
+                    <div class="comment-avatar" style="background:#ec4899"></div>
+                    <div style="flex:1;">
+                      <div style="font-size:11px; font-weight:600;">Sarah L.</div>
+                      <div style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:2px;">Agreed. Ready to ship.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chart-box-side">
+                  <div class="circle-progress-wrap">
+                    <svg class="circle-progress-svg" width="140" height="140">
+                      <defs>
+                        <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#3b82f6" />
+                          <stop offset="100%" stop-color="#6366f1" />
+                        </linearGradient>
+                      </defs>
+                      <circle class="circle-bg" cx="70" cy="70" r="60" />
+                      <circle class="circle-val" id="progress-circle" cx="70" cy="70" r="60" />
+                    </svg>
+                    <div class="percent-text" id="progress-percent">0%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAGE 4: Completion (3s - 4s) -->
+            <div class="stage" id="stage-done">
+              <div class="done-wrapper">
+                <button class="publish-btn" id="scene5-publish-btn">Publish Project</button>
+                <div class="success-circle" id="scene5-circle">
+                  <div class="success-checkmark" id="scene5-checkmark"></div>
+                </div>
+                <div class="complete-title" id="scene5-done-txt">Project Completed</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Custom Cursor -->
+        <div class="custom-cursor" id="scene5-cursor">
+          <div class="cursor-ripple" id="scene5-ripple"></div>
+          <div class="cursor-ring" id="scene5-ring"></div>
+          <div class="cursor-dot"></div>
+        </div>
+
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // 1. Persisted Browser Frame Entrance (Fades in & Tilts)
+        tl.fromTo("#montage-container",
+          { opacity: 0, scale: 0.9, transform: "rotateY(-8deg) rotateX(4deg) translateZ(-50px)" },
+          { opacity: 1, scale: 1.0, transform: "rotateY(-1deg) rotateX(1deg) translateZ(0px)", duration: 0.6, ease: "power2.out" },
+          0
+        );
+
+        // Continuous drift
+        tl.to("#montage-container", {
+          transform: "rotateY(2deg) rotateX(-1deg) translateZ(40px)",
+          duration: 3.8,
+          ease: "none"
+        }, 0.6);
+
+        // ==================== PHASE 1: ORG (0.0s - 1.0s) ====================
+        tl.to("#stage-org", { opacity: 1, scale: 1.0, transform: "translateZ(0px)", duration: 0.35, ease: "power2.out" }, 0.0);
+        
+        // Cards slide into stack in Column 1 and 2
+        tl.fromTo(["#org-card-1", "#org-card-2", "#org-card-3", "#org-card-4"],
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.3, stagger: 0.08, ease: "power2.out" },
+          0.1
+        );
+
+        // Fade out Org
+        tl.to("#stage-org", { opacity: 0, scale: 0.96, transform: "translateZ(-20px)", duration: 0.25, ease: "power2.in" }, 0.95);
+
+        // ==================== PHASE 2: PLAYER (1.0s - 2.0s) ====================
+        tl.to("#stage-player", { opacity: 1, scale: 1.0, transform: "translateZ(0px)", duration: 0.3, ease: "power2.out" }, 1.15);
+        
+        // Playhead Scrubber sweep
+        tl.fromTo("#player-progress", { width: "0%" }, { width: "100%", duration: 0.65, ease: "power1.inOut" }, 1.25);
+        tl.fromTo("#player-handle", { left: "0%" }, { left: "100%", duration: 0.65, ease: "power1.inOut" }, 1.25);
+
+        // Fade out Player
+        tl.to("#stage-player", { opacity: 0, scale: 0.96, transform: "translateZ(-20px)", duration: 0.25, ease: "power2.in" }, 1.95);
+
+        // ==================== PHASE 3: COMMENTS & PROGRESS (2.0s - 3.0s) ====================
+        tl.to("#stage-comments", { opacity: 1, scale: 1.0, transform: "translateZ(0px)", duration: 0.3, ease: "power2.out" }, 2.15);
+        
+        // Staggered comments slide-in
+        tl.to("#comment-1", { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 2.25);
+        tl.to("#comment-2", { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 2.45);
+
+        // Progress ring fill and percent update
+        const countObj = { value: 0 };
+        tl.to(countObj, {
+          value: 100,
+          duration: 0.6,
+          ease: "power2.out",
+          onUpdate: function() {
+            document.getElementById("progress-percent").textContent = Math.round(countObj.value) + "%";
+            // Stroke-dasharray is 440 (2 * pi * r = 2 * 3.14159 * 70 = 440)
+            const offset = 440 - (440 * countObj.value) / 100;
+            document.getElementById("progress-circle").style.strokeDashoffset = offset;
+          }
+        }, 2.25);
+
+        // Fade out Comments
+        tl.to("#stage-comments", { opacity: 0, scale: 0.96, transform: "translateZ(-20px)", duration: 0.25, ease: "power2.in" }, 2.95);
+
+        // ==================== PHASE 4: SUCCESS (3.0s - 4.0s) ====================
+        tl.to("#stage-done", { opacity: 1, scale: 1.0, transform: "translateZ(0px)", duration: 0.3, ease: "power2.out" }, 3.15);
+
+        // Publish Button appears
+        tl.to("#scene5-publish-btn", { opacity: 1, duration: 0.2 }, 3.25);
+
+        // Cursor enters from bottom-right, clicks Publish Button
+        tl.fromTo("#scene5-cursor",
+          { opacity: 0, left: 1000, top: 800 },
+          { opacity: 1, left: 630, top: 310, duration: 0.35, ease: "power2.out" },
+          3.1
+        );
+
+        // Click interaction
+        tl.to("#scene5-ring", { scale: 0.6, duration: 0.1 }, 3.45);
+        tl.to("#scene5-ring", { scale: 1.0, duration: 0.2, overwrite: "auto" }, 3.55);
+        tl.fromTo("#scene5-ripple", { opacity: 1, scale: 0.2 }, { opacity: 0, scale: 1.5, duration: 0.3 }, 3.5);
+
+        // Publish Button reacts and disappears
+        tl.to("#scene5-publish-btn", { scale: 0.95, duration: 0.08 }, 3.45);
+        tl.to("#scene5-publish-btn", { scale: 1.0, opacity: 0, duration: 0.2, overwrite: "auto" }, 3.53);
+
+        // Success Circle scales up
+        tl.to("#scene5-circle", {
+          opacity: 1,
+          scale: 1.0,
+          duration: 0.45,
+          ease: "back.out(1.8)"
+        }, 3.6);
+
+        // Checkmark draws out
+        tl.to("#scene5-checkmark", {
+          opacity: 1,
+          scale: 1.0,
+          duration: 0.35,
+          ease: "power2.out"
+        }, 3.8);
+
+        // Complete Text fades up
+        tl.to("#scene5-done-txt", {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          ease: "power2.out"
+        }, 3.75);
+
+        // Cursor exits
+        tl.to("#scene5-cursor", {
+          opacity: 0,
+          left: 550,
+          top: 400,
+          duration: 0.3
+        }, 3.75);
+
+        // Scene exit fade out
+        tl.to("#root", {
+          opacity: 0,
+          duration: 0.35,
+          ease: "power2.inOut"
+        }, 3.8);
+
+        window.__timelines["scene5"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

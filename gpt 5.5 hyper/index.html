@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>OrbitCommercial</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/orbit.css" />
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="OrbitCommercial"
+      data-start="0"
+      data-duration="25"
+      data-width="1920"
+      data-height="1080"
+    >
+      <audio id="bgm" class="clip" src="assets/audio/orbit-bgm.mp3" data-start="0" data-duration="25" data-track-index="1" data-volume="0.34"></audio>
+      <audio id="sfx-whoosh-a" class="clip" src="assets/audio/whoosh.mp3" data-start="0.75" data-duration="1.2" data-track-index="2" data-volume="0.36"></audio>
+      <audio id="sfx-impact" class="clip" src="assets/audio/impact.wav" data-start="2.18" data-duration="1.2" data-track-index="3" data-volume="0.25"></audio>
+      <audio id="sfx-click-a" class="clip" src="assets/audio/click.wav" data-start="5.66" data-duration="0.48" data-track-index="4" data-volume="0.38"></audio>
+      <audio id="sfx-pop" class="clip" src="assets/audio/pop.wav" data-start="8.36" data-duration="0.04" data-track-index="5" data-volume="0.28"></audio>
+      <audio id="sfx-whoosh-b" class="clip" src="assets/audio/whoosh.mp3" data-start="12.64" data-duration="1.2" data-track-index="6" data-volume="0.3"></audio>
+      <audio id="sfx-click-b" class="clip" src="assets/audio/click.wav" data-start="16.18" data-duration="0.48" data-track-index="7" data-volume="0.34"></audio>
+      <audio id="sfx-click-c" class="clip" src="assets/audio/click.wav" data-start="18.16" data-duration="0.48" data-track-index="8" data-volume="0.35"></audio>
+      <audio id="sfx-logo" class="clip" src="assets/audio/logo.wav" data-start="22.85" data-duration="2.1" data-track-index="9" data-volume="0.3"></audio>
+
+      <section id="commercial" class="clip" data-start="0" data-duration="25" data-track-index="10">
+        <div class="stage">
+          <div class="bg-fill"></div>
+          <div id="grid" class="grid" data-layout-allow-overflow="true"></div>
+          <div class="grain"></div>
+          <div class="vignette"></div>
+          <div class="shadow-plane"></div>
+          <div class="micro safe-micro-a mono">OrbitCommercial / 25s / 30fps</div>
+          <div class="micro safe-micro-b mono">creative systems moving together</div>
+
+          <div id="scene1" class="scene">
+            <div class="world" id="opening-world">
+              <div class="hud-line" id="opening-line" style="left: 190px; top: 540px; width: 640px; transform-origin:0 50%"></div>
+              <div id="orbit-ring-a" class="orbit-ring"></div>
+              <div id="orbit-ring-b" class="orbit-ring" style="width: 510px; height: 510px; transform: translate(-50%,-50%) rotateX(70deg) rotateZ(35deg)"></div>
+              <div id="streak-a" class="streak" style="transform: rotate(24deg)"></div>
+              <div id="streak-b" class="streak" style="transform: rotate(-18deg)"></div>
+              <div id="orbital-point" class="orbital-point"></div>
+              <div id="opening-title" class="opening-title">
+                <div class="rule"></div>
+                <div class="kicker mono">Orbit for creative teams</div>
+                <h1>Your work.<br />In motion.</h1>
+              </div>
+            </div>
+          </div>
+
+          <div id="scene2" class="scene">
+            <div class="camera" id="camera-main">
+              <div id="app-wrap" class="app-wrap">
+                <div class="app-window" id="app-window">
+                  <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="brand-mini">Orbit</span><div class="search mono">Search comments, cuts, tasks</div></div>
+                  <aside class="sidebar">
+                    <div class="side-label mono">Projects</div>
+                    <div class="project-pill active"><span class="pill-icon"></span>Launch Film</div>
+                    <div class="project-pill"><span class="pill-icon" style="background:#8cf0ca"></span>Brand System</div>
+                    <div class="project-pill"><span class="pill-icon" style="background:#d7e0ff"></span>Social Cutdowns</div>
+                    <div class="side-label mono">Team</div>
+                    <div class="bar"><span style="width: 78%"></span></div>
+                    <div class="bar"><span style="width: 52%; background:#8cf0ca"></span></div>
+                  </aside>
+                  <main class="main-ui">
+                    <div class="top-row"><div><div class="project-title">Launch Film</div><div class="project-sub">4 assets · 18 notes · delivery Friday</div></div><div id="sync-status" class="status-pill">Synced 12 sec ago</div></div>
+                    <div class="cards">
+                      <div class="media-card" id="media-card"><div class="panel-title">Hero edit v07</div><div class="media-thumb"></div><div class="play-head"><div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
+                      <div class="review-panel" id="review-panel"><div class="panel-title">Review thread</div><div class="comment active-comment" id="comment-a"><strong>Maya</strong>Try the reveal two beats earlier.</div><div class="comment" id="comment-b"><strong>Noah</strong>Approve after logo pass.</div><div class="response-chip" id="response-chip">Change queued</div></div>
+                    </div>
+                    <div class="lower-grid"><div class="mini-card" id="mini-plan"><b>Plan</b><div class="bar"><span style="width:62%"></span></div><div class="bar"><span style="width:38%"></span></div></div><div class="mini-card" id="mini-review"><b>Review</b><div class="bar"><span style="width:82%;background:#8cf0ca"></span></div><div class="bar"><span style="width:44%"></span></div></div><div class="mini-card" id="mini-deliver"><b>Deliver</b><div class="bar"><span style="width:54%"></span></div><div class="bar"><span style="width:70%;background:#8cf0ca"></span></div></div></div>
+                  </main>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="scene3" class="scene">
+            <div class="detached-card" id="card-plan"><div class="tiny mono">01 / orbit board</div><div class="big">Project map</div></div>
+            <div class="detached-card" id="card-review"><div class="tiny mono">02 / media pass</div><div class="big">Frame notes</div></div>
+            <div class="detached-card" id="card-deliver"><div class="tiny mono">03 / final state</div><div class="big">Delivery lane</div></div>
+            <div class="geo-shape circle" id="shape-a"></div><div class="geo-shape" id="shape-b"></div><div class="geo-shape line" id="shape-c"></div><div class="geo-shape" id="shape-d"></div>
+            <div class="feature-word" id="word-plan"><small>from intent</small>Plan</div>
+            <div class="feature-word" id="word-review"><small>through context</small>Review</div>
+            <div class="feature-word" id="word-deliver"><small>into momentum</small>Deliver</div>
+            <div class="feature-panel" id="feature-panel"><h3>Creative pipeline<br />as one system.</h3><div class="stat-row"><span>Briefs</span><b>mapped</b></div><div class="stat-row"><span>Media</span><b>annotated</b></div><div class="stat-row"><span>Progress</span><b>visible</b></div><div class="stat-row"><span>Finals</span><b>ready</b></div></div>
+          </div>
+
+          <div id="scene4" class="scene">
+            <div id="collab-canvas" class="collab-canvas">
+              <div class="review-board" id="review-board"><div class="panel-title">Collaborative review</div><div class="review-frame"><div class="pin one">1</div><div class="pin two">2</div></div><div class="comment" id="idea-comment"><strong>Ari</strong>Drop this reference into the cut.</div></div>
+              <div class="approval-card" id="approval-card"><h4>Ready for delivery?</h4><div class="bar"><span style="width:92%"></span></div><div class="bar"><span style="width:72%;background:#8cf0ca"></span></div><div class="approve-btn" id="approve-btn">Approve and ship</div></div>
+              <div class="caption-chip" id="idea-chip" style="left:446px;top:626px">idea attached</div>
+              <div class="caption-chip" id="ui-chip" style="left:1040px;top:520px;background:#8cf0ca">component created</div>
+            </div>
+            <div class="caption drop" id="caption-drop"><span class="unit">Drop</span> <span class="unit">the idea.</span></div>
+            <div class="caption shape" id="caption-shape"><span class="unit" data-layout-allow-overlap="true">Shape it</span><br /><span class="unit">together.</span></div>
+            <div class="caption ship" id="caption-ship"><span class="unit" data-layout-allow-overlap="true">Ship it</span><br /><span class="unit">while it matters.</span></div>
+          </div>
+
+          <div id="scene5" class="scene">
+            <div class="montage" id="montage">
+              <div class="montage-frame" id="montage-frame">
+                <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="brand-mini">Orbit</span><div class="search mono">live workspace</div></div>
+                <div class="montage-state" id="state-org"><div class="montage-title">Projects find their orbit.</div><div class="org-grid"><div class="org-card"><div class="thumb"></div><b>Campaign</b><div class="line"></div><div class="line" style="width:60%"></div></div><div class="org-card"><div class="thumb"></div><b>Storyboard</b><div class="line"></div><div class="line" style="width:70%"></div></div><div class="org-card"><div class="thumb"></div><b>Audio</b><div class="line"></div><div class="line" style="width:46%"></div></div><div class="org-card"><div class="thumb"></div><b>Delivery</b><div class="line"></div><div class="line" style="width:80%"></div></div></div></div>
+                <div class="montage-state" id="state-media"><div class="montage-title">Every frame stays discussable.</div><div class="media-card" style="width:790px;height:430px"><div class="panel-title">Scene 04 · timeline review</div><div class="media-thumb" style="height:250px"></div><div class="play-head" style="top:332px"></div></div><div class="comment active-comment" style="position:absolute;right:0;top:106px;width:360px"><strong>Sam</strong>Pin this note to frame 426.</div></div>
+                <div class="montage-state" id="state-approval"><div class="montage-title">Approval becomes motion.</div><div class="checkmark">✓</div><div class="approval-card" style="opacity:1;left:330px;top:150px"><h4>Final pass approved</h4><div class="bar"><span style="width:100%;background:#8cf0ca"></span></div><div class="approve-btn">Locked</div></div></div>
+                <div class="montage-state" id="state-analytics"><div class="montage-title">Progress without meetings.</div><div class="analytics-ring">94%</div><div style="position:absolute;left:360px;top:120px;width:560px"><div class="bar"><span style="width:94%"></span></div><div class="bar"><span style="width:78%;background:#8cf0ca"></span></div><div class="bar"><span style="width:64%"></span></div></div></div>
+                <div class="montage-state" id="state-complete"><div class="montage-title">Delivered while the idea is alive.</div><div class="checkmark">✓</div><div class="status-pill" style="position:absolute;left:245px;top:280px;width:210px;justify-content:center">All finals exported</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="scene6" class="scene">
+            <div class="brand-lock" id="brand-lock"><div><div class="orbit-symbol" id="orbit-symbol"></div><div class="wordmark"><h2>Orbit</h2><p>Everything moves together.</p><div class="end-card-rule" id="end-rule"></div></div></div></div>
+          </div>
+
+          <div class="spark" id="spark-0" style="left:238px;top:326px"></div>
+          <div class="spark" id="spark-1" style="left:410px;top:178px"></div>
+          <div class="spark" id="spark-2" style="left:1518px;top:232px"></div>
+          <div class="spark" id="spark-3" style="left:1626px;top:628px"></div>
+          <div class="spark" id="spark-4" style="left:590px;top:824px"></div>
+          <div class="spark" id="spark-5" style="left:1040px;top:174px"></div>
+          <div class="spark" id="spark-6" style="left:1220px;top:802px"></div>
+          <div class="spark" id="spark-7" style="left:770px;top:318px"></div>
+          <div class="spark" id="spark-8" style="left:318px;top:704px"></div>
+          <div class="spark" id="spark-9" style="left:1438px;top:846px"></div>
+          <div class="spark" id="spark-10" style="left:1740px;top:402px"></div>
+          <div class="spark" id="spark-11" style="left:958px;top:914px"></div>
+          <div id="mask-wipe" class="mask-wipe" data-layout-allow-overflow="true"></div>
+          <div id="cursor" class="cursor"><div class="cursor-ring" id="cursor-ring"></div><svg width="54" height="54" viewBox="0 0 54 54"><path class="cursor-tip click-compress" d="M8 4 L38 31 L24 34 L18 48 L8 4 Z" /></svg></div>
+        </div>
+      </section>
+      <script>
+        window.__timelines = window.__timelines || {};
+        window.__orbitTimeline = gsap.timeline({ paused: true });
+        window.__timelines["OrbitCommercial"] = window.__orbitTimeline;
+      </script>
+      <script>
+(() => {
+  const DURATION = 25;
+  const sceneTimes = {
+    opening: [0, 3],
+    interface: [3, 8],
+    transform: [8, 13],
+    captions: [13, 19],
+    montage: [19, 23],
+    lockup: [23, 25]
+  };
+
+  window.__timelines = window.__timelines || {};
+
+  const sparkPositions = [
+    [238, 326], [410, 178], [1518, 232], [1626, 628], [590, 824], [1040, 174],
+    [1220, 802], [770, 318], [318, 704], [1438, 846], [1740, 402], [958, 914]
+  ];
+
+  const tl = window.__orbitTimeline || gsap.timeline({ paused: true });
+  window.__timelines['OrbitCommercial'] = tl;
+
+  function showScene(id, start, end) {
+    tl.set(id, { visibility: 'visible', opacity: 1 }, start);
+    if (end !== undefined) {
+      tl.to(id, { opacity: 0, duration: 0.28, ease: 'power1.inOut' }, end - 0.28);
+      tl.set(id, { visibility: 'hidden' }, end);
+    }
+  }
+
+  function moveCursor(time, x, y, duration = 0.75, ease = 'power3.inOut') {
+    tl.to('#cursor', { x, y, duration, ease }, time);
+  }
+
+  function click(time) {
+    tl.to('#cursor .click-compress', { scale: 0.82, duration: 0.07, transformOrigin: '8px 4px', ease: 'power2.out', overwrite: 'auto' }, time);
+    tl.to('#cursor .click-compress', { scale: 1, duration: 0.18, ease: 'back.out(2.4)', overwrite: 'auto' }, time + 0.08);
+    tl.fromTo('#cursor-ring', { opacity: 0.9, scale: 0.18 }, { opacity: 0, scale: 1.28, duration: 0.46, ease: 'power2.out' }, time + 0.02);
+  }
+
+  showScene('#scene1', sceneTimes.opening[0], 3.05);
+  showScene('#scene2', 2.35, 8.08);
+  showScene('#scene3', 7.78, 13.08);
+  showScene('#scene4', 12.82, 19.15);
+  showScene('#scene5', 18.82, 23.15);
+  showScene('#scene6', 22.72);
+  tl.set("#scene2", { visibility: "hidden" }, 8.08);
+  tl.set("#scene3", { visibility: "hidden" }, 13.08);
+  tl.set("#scene4", { visibility: "hidden" }, 19.15);
+  tl.set("#scene5", { visibility: "hidden" }, 23.15);
+  tl.set("#scene6", { visibility: "hidden" }, 25);
+
+  tl.set(['#scene2', '#scene3', '#scene4', '#scene5', '#scene6'], { opacity: 0 }, 0);
+  tl.set('#app-wrap', { transformPerspective: 1500, rotationX: 12, rotationY: -22, rotationZ: -2, z: -420, scale: 0.52, opacity: 0 }, 0);
+  tl.set('.mini-card', { y: 18, opacity: 0 }, 0);
+  tl.set('#cursor', { x: -120, y: 720, opacity: 0, scale: 1 }, 0);
+  tl.set('#montage-frame', { transformPerspective: 1300, rotationX: 0, rotationY: 0, scale: 1 }, 0);
+
+  // Scene 1 — controlled opening.
+  tl.fromTo('#grid', { opacity: 0 }, { opacity: 0.23, duration: 1.2 }, 0);
+  tl.fromTo('#opening-line', { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: 'expo.out' }, 0.28);
+  tl.fromTo('#opening-title', { opacity: 0, x: -34, y: 18 }, { opacity: 1, x: 0, y: 0, duration: 0.92, ease: 'power3.out' }, 0.42);
+  tl.fromTo('#orbit-ring-a', { opacity: 0, scale: 0.5, rotationZ: -36 }, { opacity: 0.95, scale: 1, rotationZ: 18, duration: 1.0, ease: 'power3.out' }, 0.55);
+  tl.fromTo('#orbit-ring-b', { opacity: 0, scale: 0.28, rotationZ: 35 }, { opacity: 0.62, scale: 1, rotationZ: -22, duration: 1.25, ease: 'power3.out' }, 0.72);
+  tl.fromTo('#orbital-point', { scale: 0.25, z: -620, x: -120, y: -60, opacity: 0.4 }, { scale: 1.6, z: 120, x: 220, y: 12, opacity: 1, duration: 1.15, ease: 'expo.in' }, 0.9);
+  tl.fromTo('#streak-a', { opacity: 0, scaleX: 0.1, x: -320, y: -44 }, { opacity: 0.9, scaleX: 1, x: -35, y: -8, duration: 0.38, ease: 'power2.out' }, 1.62);
+  tl.fromTo('#streak-b', { opacity: 0, scaleX: 0.1, x: -260, y: 80 }, { opacity: 0.72, scaleX: 1.2, x: 48, y: 24, duration: 0.42, ease: 'power2.out' }, 1.72);
+  tl.to(['#streak-a', '#streak-b', '#orbit-ring-a', '#orbit-ring-b'], { opacity: 0, duration: 0.38, ease: 'power2.in' }, 2.12);
+  tl.to('#orbital-point', { scale: 14, opacity: 0, duration: 0.55, ease: 'expo.inOut' }, 2.05);
+  tl.to('#opening-title', { opacity: 0, x: -20, duration: 0.36, ease: 'power2.in' }, 2.34);
+
+  // Scene 2 — interface reveal and first cursor interaction.
+  tl.to('#app-wrap', { opacity: 1, z: 0, scale: 1, rotationX: 7, rotationY: -12, rotationZ: -1, duration: 1.0, ease: 'expo.out' }, 2.36);
+  tl.to('#app-wrap', { rotationX: 3, rotationY: -5, x: 28, y: -10, duration: 2.7, ease: 'power2.inOut' }, 3.38);
+  tl.fromTo('#media-card', { y: 42, opacity: 0, z: -40 }, { y: 0, opacity: 1, z: 44, duration: 0.8, ease: 'power3.out' }, 3.08);
+  tl.fromTo('#review-panel', { y: 34, opacity: 0, z: -20 }, { y: 0, opacity: 1, z: 74, duration: 0.88, ease: 'power3.out' }, 3.22);
+  tl.to('.mini-card', { opacity: 1, y: 0, duration: 0.58, stagger: 0.08, ease: 'power3.out' }, 3.58);
+  tl.fromTo('.wave i', { scaleY: 0.35, opacity: 0.35 }, { scaleY: 1, opacity: 0.9, duration: 0.52, stagger: 0.026, ease: 'back.out(1.5)' }, 4.02);
+  tl.to('#cursor', { opacity: 1, duration: 0.22 }, 4.18);
+  moveCursor(4.18, 1420, 474, 0.9, 'power3.out');
+  moveCursor(5.08, 1320, 392, 0.58, 'power2.inOut');
+  click(5.66);
+  tl.to('#comment-b', { backgroundColor: 'rgba(95,119,255,.18)', duration: 0.22 }, 5.72);
+  tl.to('#response-chip', { opacity: 1, y: -2, duration: 0.28, ease: 'back.out(1.8)' }, 5.78);
+  tl.to('#sync-status', { backgroundColor: 'rgba(117,139,255,.22)', color: '#ffffff', duration: 0.26 }, 5.84);
+  moveCursor(6.2, 1048, 728, 0.75, 'power3.inOut');
+  click(6.96);
+  tl.to('#mini-review', { y: -10, backgroundColor: 'rgba(140,240,202,.12)', duration: 0.26 }, 7.02);
+  tl.to('#mini-review', { y: 0, duration: 0.34, ease: 'elastic.out(1, .55)' }, 7.30);
+  tl.to('#app-wrap', { x: -80, y: 16, rotationY: -14, scale: 0.96, duration: 0.72, ease: 'power2.inOut' }, 7.24);
+
+  // Scene 3 — interface cards detach and become a system.
+  tl.fromTo(['#card-plan', '#card-review', '#card-deliver'],
+    { opacity: 0, y: 210, rotationX: 18, rotationY: -16, scale: 0.72 },
+    { opacity: 1, y: 0, rotationX: 0, rotationY: 0, scale: 1, duration: 0.72, stagger: 0.08, ease: 'expo.out' }, 8.0);
+  tl.set('#card-plan', { x: 324, y: 245 }, 8.0);
+  tl.set('#card-review', { x: 660, y: 438 }, 8.0);
+  tl.set('#card-deliver', { x: 1008, y: 252 }, 8.0);
+  tl.to('#card-plan', { x: 214, y: 230, rotationZ: -8, duration: 0.85, ease: 'power3.inOut' }, 8.62);
+  tl.to('#card-review', { x: 548, y: 268, rotationZ: 5, duration: 0.85, ease: 'power3.inOut' }, 8.68);
+  tl.to('#card-deliver', { x: 884, y: 230, rotationZ: 10, duration: 0.85, ease: 'power3.inOut' }, 8.74);
+  tl.fromTo('.geo-shape', { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1, duration: 0.44, stagger: 0.04, ease: 'back.out(2)' }, 9.18);
+  tl.to('#shape-a', { x: 260, y: 610, rotationZ: 65, duration: 0.85, ease: 'power3.inOut' }, 9.2);
+  tl.to('#shape-b', { x: 590, y: 610, rotationZ: 18, duration: 0.85, ease: 'power3.inOut' }, 9.24);
+  tl.to('#shape-c', { x: 888, y: 652, scaleX: 3.2, duration: 0.85, ease: 'power3.inOut' }, 9.28);
+  tl.to('#shape-d', { x: 1150, y: 610, rotationZ: -30, duration: 0.85, ease: 'power3.inOut' }, 9.32);
+  tl.to('#card-plan', { scale: 0.62, x: 190, y: 140, borderRadius: 34, duration: 0.72, ease: 'power3.inOut' }, 9.74);
+  tl.to('#card-review', { scale: 0.62, x: 520, y: 640, borderRadius: 80, duration: 0.72, ease: 'power3.inOut' }, 9.8);
+  tl.to('#card-deliver', { scale: 0.62, x: 870, y: 138, borderRadius: 34, duration: 0.72, ease: 'power3.inOut' }, 9.86);
+  tl.fromTo('#word-plan', { opacity: 0, x: 140, y: 442 }, { opacity: 1, x: 180, y: 420, duration: 0.52, ease: 'power3.out' }, 9.72);
+  tl.fromTo('#word-review', { opacity: 0, x: 595, y: 356, scale: 0.82 }, { opacity: 1, x: 625, y: 352, scale: 1, duration: 0.6, ease: 'back.out(1.6)' }, 10.36);
+  tl.fromTo('#word-deliver', { opacity: 0, x: 1045, y: 504, scale: 1.14 }, { opacity: 1, x: 1020, y: 500, scale: 1, duration: 0.48, ease: 'power3.out' }, 11.05);
+  tl.to(['#word-plan', '#word-review', '#word-deliver'], { y: '+=20', opacity: 0.22, duration: 0.58, stagger: 0.05, ease: 'power2.in' }, 11.8);
+  tl.fromTo('#feature-panel', { opacity: 0, x: 160, y: 24, rotationY: -22, scale: 0.78 }, { opacity: 1, x: 0, y: 0, rotationY: 0, scale: 1, duration: 0.86, ease: 'expo.out' }, 11.72);
+  tl.to(['#card-plan', '#card-review', '#card-deliver', '.geo-shape'], { opacity: 0, scale: 0.42, duration: 0.45, ease: 'power2.in' }, 12.42);
+  tl.to('#feature-panel', { x: -190, y: -24, rotationY: 8, scale: 0.9, opacity: 0, duration: 0.46, ease: 'power2.in' }, 12.62);
+
+  // Scene 4 — dynamic captions behave like UI.
+  tl.fromTo('#collab-canvas', { opacity: 0, y: 34, rotationX: 8 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.66, ease: 'power3.out' }, 13.0);
+  tl.fromTo('#caption-drop', { opacity: 0, x: -80, y: 28, scale: 0.82 }, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.5, ease: 'power3.out' }, 13.18);
+  tl.to('#caption-drop .unit:first-child', { x: 150, y: 302, scale: 0.42, duration: 0.72, ease: 'power3.inOut' }, 13.78);
+  tl.to('#caption-drop .unit:last-child', { x: 352, y: 270, scale: 0.34, duration: 0.72, ease: 'power3.inOut' }, 13.84);
+  tl.to('#caption-drop', { opacity: 0.18, duration: 0.25 }, 14.42);
+  tl.to('#idea-comment', { backgroundColor: 'rgba(117,139,255,.18)', duration: 0.25 }, 14.18);
+  tl.fromTo('#idea-chip', { opacity: 0, scale: 0.75, y: -14 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: 'back.out(2)' }, 14.36);
+  moveCursor(14.0, 925, 590, 0.62, 'power3.inOut');
+  click(14.62);
+  tl.fromTo('#caption-shape', { opacity: 0, x: 120, y: -36, scale: 0.8 }, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.54, ease: 'power3.out' }, 15.02);
+  tl.to('#caption-shape .unit:first-child', { x: -190, y: 208, scale: 0.48, duration: 0.76, ease: 'power3.inOut' }, 15.58);
+  tl.to('#caption-shape .unit:last-child', { x: 285, y: 306, scale: 0.52, duration: 0.76, ease: 'power3.inOut' }, 15.64);
+  tl.fromTo('#ui-chip', { opacity: 0, scale: 0.8, y: 8 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: 'back.out(2)' }, 16.05);
+  moveCursor(15.45, 1324, 673, 0.72, 'power3.inOut');
+  click(16.18);
+  tl.fromTo('#approval-card', { opacity: 0, y: 40, rotationY: -18, scale: 0.88 }, { opacity: 1, y: 0, rotationY: 0, scale: 1, duration: 0.58, ease: 'expo.out' }, 16.24);
+  tl.to('#caption-shape', { opacity: 0, duration: 0.25 }, 16.62);
+  tl.set('#caption-shape', { visibility: 'hidden' }, 16.9);
+  tl.fromTo('#caption-ship', { opacity: 0, x: 110, y: 44, scale: 0.82 }, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.54, ease: 'power3.out' }, 17.05);
+  moveCursor(17.38, 1396, 751, 0.72, 'power3.inOut');
+  click(18.16);
+  tl.to('#approve-btn', { backgroundColor: '#8cf0ca', color: '#0f1320', scale: 0.98, duration: 0.12 }, 18.18);
+  tl.to('#approve-btn', { scale: 1, duration: 0.24, ease: 'back.out(2.2)' }, 18.3);
+  tl.to('#caption-ship .unit:first-child', { x: -296, y: 119, scale: 0.42, duration: 0.56, ease: 'power3.inOut' }, 18.38);
+  tl.to('#caption-ship .unit:last-child', { opacity: 0.2, y: 24, duration: 0.36, ease: 'power2.in' }, 18.58);
+  tl.to('#cursor', { opacity: 0, duration: 0.32 }, 18.52);
+  tl.to('#collab-canvas', { scale: 0.92, y: -26, opacity: 0.35, duration: 0.5, ease: 'power2.inOut' }, 18.55);
+
+  // Scene 5 — accelerated product montage with one continuous shell.
+  tl.fromTo('#montage', { opacity: 0, scale: 0.9, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 18.92);
+  const states = ['#state-org', '#state-media', '#state-approval', '#state-analytics', '#state-complete'];
+  const starts = [19.05, 19.78, 20.52, 21.22, 22.03];
+  states.forEach((state, i) => {
+    tl.fromTo(state, { opacity: 0, x: i % 2 ? 90 : -90, scale: 0.96 }, { opacity: 1, x: 0, scale: 1, duration: 0.24, ease: 'power2.out' }, starts[i]);
+    if (i < states.length - 1) tl.to(state, { opacity: 0, x: i % 2 ? -70 : 70, scale: 1.02, duration: 0.2, ease: 'power2.in' }, starts[i] + 0.58);
+  });
+  tl.fromTo('#mask-wipe', { x: '-105%', opacity: 0.0 }, { x: '105%', opacity: 0.28, duration: 0.34, ease: 'power3.inOut' }, 19.72);
+  tl.fromTo('#mask-wipe', { x: '-105%', opacity: 0.0 }, { x: '105%', opacity: 0.28, duration: 0.34, ease: 'power3.inOut' }, 20.46);
+  tl.fromTo('#mask-wipe', { x: '-105%', opacity: 0.0 }, { x: '105%', opacity: 0.24, duration: 0.32, ease: 'power3.inOut' }, 21.16);
+  tl.fromTo('#mask-wipe', { x: '-105%', opacity: 0.0 }, { x: '105%', opacity: 0.2, duration: 0.32, ease: 'power3.inOut' }, 21.96);
+  tl.to('#montage-frame', { rotationY: -6, rotationX: 3, scale: 0.98, duration: 1.1, ease: 'power2.inOut' }, 19.2);
+  tl.to('#montage-frame', { rotationY: 5, rotationX: -2, scale: 1.02, duration: 1.3, ease: 'power2.inOut' }, 20.35);
+  tl.to('#montage-frame', { rotationY: 0, rotationX: 0, scale: 0.84, y: -10, duration: 0.62, ease: 'expo.inOut' }, 22.42);
+
+  // Shared sparkle accents and final brand lockup.
+  tl.fromTo('.spark', { opacity: 0, scale: 0 }, { opacity: 0.9, scale: 1, duration: 0.18, stagger: 0.018, ease: 'power2.out' }, 22.45);
+  tl.to('.spark', { x: (i) => 960 - sparkPositions[i][0], y: (i) => 540 - sparkPositions[i][1], scale: 0.35, opacity: 0, duration: 0.8, stagger: 0.018, ease: 'expo.inOut' }, 22.86);
+  tl.fromTo('#brand-lock', { opacity: 0, scale: 0.76, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: 'expo.out' }, 22.95);
+  tl.fromTo('#orbit-symbol', { rotation: -36, scale: 0.84 }, { rotation: 0, scale: 1, duration: 0.72, ease: 'back.out(1.4)' }, 22.98);
+  tl.to('#end-rule', { scaleX: 1, duration: 0.76, ease: 'expo.out' }, 23.58);
+  tl.to('#brand-lock', { scale: 1.018, duration: 0.52, ease: 'sine.inOut' }, 24.12);
+  tl.to('#brand-lock', { scale: 1, duration: 0.5, ease: 'sine.inOut' }, 24.64);
+  tl.to('#bgm', { volume: 0.16, duration: 1.2, ease: 'power1.inOut' }, 23.6);
+})();
+
+      </script>
+    </div>
+  </body>
+</html>

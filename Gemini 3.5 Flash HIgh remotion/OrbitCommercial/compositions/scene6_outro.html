@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          background: #060608;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          perspective: 1200px;
+        }
+
+        /* Ambient spatial background grid */
+        .scene6-grid {
+          position: absolute;
+          width: 150%;
+          height: 150%;
+          background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+          background-size: 50px 50px;
+          transform: translateZ(-200px);
+          opacity: 0.8;
+        }
+
+        .brand-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 24px;
+          transform-style: preserve-3d;
+          opacity: 0;
+        }
+
+        /* Circular Orbit Emblem */
+        .logo-symbol {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transform-style: preserve-3d;
+          transform: translateZ(20px);
+        }
+        .logo-core {
+          width: 36px;
+          height: 36px;
+          background: linear-gradient(135deg, #ffffff, #6366f1);
+          border-radius: 50%;
+          box-shadow: 
+            0 0 25px #6366f1,
+            0 0 50px rgba(99,102,241,0.5);
+        }
+        .logo-orbit-ring {
+          position: absolute;
+          width: 90px;
+          height: 90px;
+          border: 2px solid rgba(255, 255, 255, 0.1);
+          border-top: 2px solid #6366f1;
+          border-radius: 50%;
+          transform: rotateX(65deg) rotateY(15deg);
+        }
+        .logo-orbit-ring-outer {
+          position: absolute;
+          width: 130px;
+          height: 130px;
+          border: 1.5px dashed rgba(99, 102, 241, 0.2);
+          border-radius: 50%;
+          transform: rotateX(60deg) rotateY(-20deg);
+        }
+
+        /* Wordmark */
+        .logo-text {
+          font-family: "Outfit", sans-serif;
+          font-weight: 800;
+          font-size: 54px;
+          color: #ffffff;
+          letter-spacing: 2px;
+          line-height: 1;
+          background: linear-gradient(to bottom, #ffffff 60%, rgba(255, 255, 255, 0.7) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-top: 12px;
+          transform: translateZ(10px);
+        }
+
+        /* Tagline / Subtitle */
+        .logo-tagline {
+          font-family: "Inter", sans-serif;
+          font-weight: 500;
+          font-size: 20px;
+          color: rgba(255, 255, 255, 0.55);
+          letter-spacing: 0.5px;
+          transform: translateZ(5px);
+          margin-top: 8px;
+        }
+
+        /* Subtle glow backdrop */
+        .brand-backdrop-glow {
+          position: absolute;
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+          pointer-events: none;
+          transform: translateZ(-50px);
+        }
+      </style>
+
+      <div id="root" data-composition-id="scene6" data-width="1920" data-height="1080">
+        <div class="scene6-grid" id="scene6-grid-move" data-layout-allow-overflow="true"></div>
+        <div class="brand-backdrop-glow" id="scene6-glow" data-layout-allow-overflow="true"></div>
+
+        <div class="brand-wrapper" id="scene6-brand">
+          <div class="logo-symbol">
+            <div class="logo-orbit-ring-outer" id="scene6-ring2"></div>
+            <div class="logo-orbit-ring" id="scene6-ring1"></div>
+            <div class="logo-core" id="scene6-core"></div>
+          </div>
+          
+          <h1 class="logo-text" id="scene6-title">Orbit</h1>
+          <p class="logo-tagline" id="scene6-tagline">Everything moves together.</p>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // 1. Grid and Background ambient drift
+        tl.fromTo("#scene6-grid-move",
+          { transform: "translateZ(-200px) translateY(0px) rotate(0deg)" },
+          { transform: "translateZ(-180px) translateY(-20px) rotate(2deg)", duration: 2.0, ease: "power1.out" },
+          0
+        );
+
+        // 2. Brand lockup entrance (Fades and scales in)
+        tl.fromTo("#scene6-brand",
+          { opacity: 0, scale: 0.85, transform: "translateZ(-80px)" },
+          { opacity: 1, scale: 1.0, transform: "translateZ(0px)", duration: 0.9, ease: "power3.out" },
+          0.1
+        );
+
+        // 3. Circular Orbit Symbol micro-animations
+        // Rotation on outer rings
+        tl.fromTo("#scene6-ring1",
+          { rotation: 0 },
+          { rotation: 360, duration: 1.8, ease: "power2.out" },
+          0.1
+        );
+        tl.fromTo("#scene6-ring2",
+          { rotation: 0 },
+          { rotation: -240, duration: 1.8, ease: "power2.out" },
+          0.1
+        );
+        // Soft pulsing core glow
+        tl.fromTo("#scene6-core",
+          { scale: 0.8, boxShadow: "0 0 15px #6366f1" },
+          { scale: 1.05, boxShadow: "0 0 35px #6366f1, 0 0 60px rgba(99,102,241,0.7)", duration: 0.9, yoyo: true, repeat: 1, ease: "power1.inOut" },
+          0.1
+        );
+
+        // 4. Wordmark tracking-out / letter-spacing expansion
+        tl.fromTo("#scene6-title",
+          { letterSpacing: "-4px", opacity: 0 },
+          { letterSpacing: "2px", opacity: 1, duration: 1.0, ease: "power3.out" },
+          0.3
+        );
+
+        // 5. Tagline fades in
+        tl.fromTo("#scene6-tagline",
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
+          0.6
+        );
+
+        // 6. Camera zoom drift: Continuous slow push back for depth, settling to rest
+        tl.to("#scene6-brand", {
+          transform: "translateZ(-15px)",
+          duration: 1.5,
+          ease: "power1.out"
+        }, 1.0);
+
+        window.__timelines["scene6"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

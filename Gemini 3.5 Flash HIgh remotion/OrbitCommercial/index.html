@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Orbit — Your work. In motion.</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #060608;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+      /* Sub-composition slots take full bleed */
+      #root > div[data-composition-src] {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      
+      /* Global styles for components */
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #ffffff;
+        -webkit-font-smoothing: antialiased;
+      }
+      .font-display {
+        font-family: "Outfit", sans-serif;
+      }
+      .font-mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="25"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Scene 1: Controlled opening (0s - 3s) -->
+      <div
+        id="el-scene1"
+        data-composition-id="scene1"
+        data-composition-src="compositions/scene1_opening.html"
+        data-start="0"
+        data-duration="3"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+
+      <!-- Scene 2: Interface reveal (3s - 8s) -->
+      <div
+        id="el-scene2"
+        data-composition-id="scene2"
+        data-composition-src="compositions/scene2_reveal.html"
+        data-start="3"
+        data-duration="5"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+
+      <!-- Scene 3: Shape-to-interface transformation (8s - 13s) -->
+      <div
+        id="el-scene3"
+        data-composition-id="scene3"
+        data-composition-src="compositions/scene3_transform.html"
+        data-start="8"
+        data-duration="5"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+
+      <!-- Scene 4: Dynamic captions and collaboration (13s - 19s) -->
+      <div
+        id="el-scene4"
+        data-composition-id="scene4"
+        data-composition-src="compositions/scene4_collaboration.html"
+        data-start="13"
+        data-duration="6"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+
+      <!-- Scene 5: Accelerated product montage (19s - 23s) -->
+      <div
+        id="el-scene5"
+        data-composition-id="scene5"
+        data-composition-src="compositions/scene5_montage.html"
+        data-start="19"
+        data-duration="4"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+
+      <!-- Scene 6: Final brand lockup (23s - 25s) -->
+      <div
+        id="el-scene6"
+        data-composition-id="scene6"
+        data-composition-src="compositions/scene6_outro.html"
+        data-start="23"
+        data-duration="2"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+
+      <!-- Audio Track: Sleek tech background music (0s - 25s) -->
+      <audio
+        id="bgm"
+        src="assets/bgm.mp3"
+        data-start="0"
+        data-duration="25"
+        data-track-index="10"
+        data-volume="0.4"
+      ></audio>
+
+      <!-- Audio Tracks: Sound Design Effects (SFX) mapped to key transitions and actions -->
+      <audio id="sfx-whoosh-1" src="assets/sfx/whoosh.mp3" data-start="0" data-duration="0.57" data-track-index="11" data-volume="0.6"></audio>
+      <audio id="sfx-click-2" src="assets/sfx/click.mp3" data-start="5.5" data-duration="0.37" data-track-index="12" data-volume="0.75"></audio>
+      <audio id="sfx-morph-3" src="assets/sfx/glitch-3.mp3" data-start="8.0" data-duration="3.1" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="sfx-whoosh-4" src="assets/sfx/whoosh-short.mp3" data-start="14.5" data-duration="0.57" data-track-index="14" data-volume="0.55"></audio>
+      <audio id="sfx-click-5a" src="assets/sfx/click-soft.mp3" data-start="19.5" data-duration="0.37" data-track-index="15" data-volume="0.5"></audio>
+      <audio id="sfx-click-5b" src="assets/sfx/click-soft.mp3" data-start="20.5" data-duration="0.37" data-track-index="16" data-volume="0.5"></audio>
+      <audio id="sfx-click-5c" src="assets/sfx/click-soft.mp3" data-start="21.5" data-duration="0.37" data-track-index="17" data-volume="0.5"></audio>
+      <audio id="sfx-chime-5d" src="assets/sfx/chime.mp3" data-start="22.0" data-duration="2.5" data-track-index="18" data-volume="0.7"></audio>
+      <audio id="sfx-lockup-6" src="assets/sfx/ping.mp3" data-start="23.5" data-duration="1.32" data-track-index="19" data-volume="0.6"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      
+      // Global fade-out to prevent sudden clip cuts on BGM
+      tl.to("#bgm", { volume: 0, duration: 1.5, ease: "power1.in" }, 23.5);
+      
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
